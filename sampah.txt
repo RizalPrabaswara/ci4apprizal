@@ -1,0 +1,95 @@
+,
+            'sampul' => [
+                'rules' => 'uploaded[sampul]|max_size[sampul,1024]|is_iamage[sampul]|mime_in[sampul, image/jpg], image/jpeg, image/png]',
+                'errors' => [
+                    'uploaded' => 'Pilih Gambar Sampul Terlebih Dahulu',
+                    'max_size' => 'Ukuran Gambar Terlalu Besar',
+                    'is_image' => 'Yang anda pilih bukan Gambar',
+                    'mime_in' => 'Yang anda pilih bukan JPG/JPEG/PNG',
+                ]
+            ]
+
+
+            <input type="text" class="form-control <?= (session('validation')) ? 'is-invalid' : ''; ?>" id="judul" name="judul" aria-describedby="validationServer03Feedback" autofocus value="<?= old('judul'); ?>">
+                        <div id="validationServer03Feedback" class="invalid-feedback">
+                            <?php if (session('validation')) : ?>
+                                <div class="alert alert-danger alert-dismissible">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <?php foreach (session('validation')->getErrors() as $error) : ?>
+                                        <li><?= esc($error) ?></li>
+                                    <?php endforeach ?>
+                                </div>
+                            <?php endif ?>
+                        </div>
+
+
+                        //validasi input
+        if (!$this->validate([
+            'judul' => [
+                'rules' => 'required|is_unique[komik.judul]',
+                'errors' => [
+                    'required' => '{field} komik harus diisi.',
+                    'is_unique' => '{field} komik sudah terdaftar.'
+                ]
+            ]
+        ])) {
+            $validation = \Config\Services::validation();
+
+            return redirect()->to('komik/create')->withInput()->with('validation', $validation);
+        }
+
+        <form action="/komik/save" method="post">
+                <?= csrf_field(); ?>
+                <div class="form-group row">
+                    <label for="judul" class="col-sm-2 col-form-label">judul</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control <?= (session('validation')) ? 'is-invalid' : ''; ?>" id="judul" name="judul" aria-describedby="validationServer03Feedback" autofocus value="<?= old('judul'); ?>">
+                        <div id="validationServer03Feedback" class="invalid-feedback">
+                            <?php if (session('validation')) : ?>
+                                <div class="alert alert-danger alert-dismissible">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <?php foreach (session('validation')->getErrors() as $error) : ?>
+                                        <li><?= esc($error) ?></li>
+                                    <?php endforeach ?>
+                                </div>
+                            <?php endif ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="penulis" class="col-sm-2 col-form-label">penulis</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="penulis" name="penulis" value="<?= old('penulis'); ?>">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="penerbit" class="col-sm-2 col-form-label">penerbit</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="penerbit" name="penerbit" value="<?= old('penerbit'); ?>">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="sampul" class="col-sm-2 col-form-label">sampul</label>
+                    <div class="col-sm-10">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input <?= (session('validation')) ? 'is-invalid' : ''; ?>" aria-describedby="validationServer04Feedback" id="sampul" name="sampul">
+                            <div id="validationServer04Feedback" class="invalid-feedback">
+                                <?php if (session('validation')) : ?>
+                                    <div class="alert alert-danger alert-dismissible">
+                                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                        <?php foreach (session('validation')->getErrors() as $error) : ?>
+                                            <li><?= esc($error) ?></li>
+                                        <?php endforeach ?>
+                                    </div>
+                                <?php endif ?>
+                            </div>
+                            <label class="custom-file-label" for="sampul">Pilih Gambar....</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Tambah Data</button>
+                    </div>
+                </div>
+            </form>
